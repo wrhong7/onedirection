@@ -1,0 +1,118 @@
+#!/usr/bin/env ruby
+require 'JSON'
+require 'rest-client'
+require_relative 'city_db'
+require 'openssl'
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
+class City_weather
+	attr_accessor :city_name, :city_lon, :city_lat, :forecast1, :forecast2, :forecast3, :forecast4, :forecast5, :forecast6, :forecast7, :day_temperature_1, :day_temperature_2, :day_temperature_3, :day_temperature_4, :day_temperature_5, :day_temperature_6, :day_temperature_7
+
+	def initialize(city_name, city_lon, city_lat, forecast_1, forecast_2, forecast_3, forecast_4, forecast_5, forecast_6, forecast_7, day_temperature_1, day_temperature_2, day_temperature_3, day_temperature_4, day_temperature_5, day_temperature_6, day_temperature_7)
+		@city_name = city_name
+		@city_lon = city_lon
+		@city_lat = city_lat
+		@forecast_1 = forecast_1
+		@forecast_2 = forecast_2
+		@forecast_3 = forecast_3
+		@forecast_4 = forecast_4
+		@forecast_5 = forecast_5
+		@forecast_6 = forecast_6
+		@forecast_7 = forecast_7
+		@day_temperature_1 = day_temperature_1
+		@day_temperature_2 = day_temperature_2
+		@day_temperature_3 = day_temperature_3
+		@day_temperature_4 = day_temperature_4
+		@day_temperature_5 = day_temperature_5
+		@day_temperature_6 = day_temperature_6
+		@day_temperature_7 = day_temperature_7
+	end
+
+	def to_s
+		"#{@city_name} is located at #{@city_lon}, #{@city_lat}.
+		The first day forecast: #{@forecast_1}, #{@day_temperature_1} Celcius.
+		The second day forecast: #{@forecast_2}, #{@day_temperature_2} Celcius.
+		The third day forecast: #{@forecast_3}, #{@day_temperature_3} Celcius.
+		The fourth day forecast: #{@forecast_4} #{@day_temperature_4} Celcius.
+		The fifth day forecast: #{@forecast_5}, #{@day_temperature_5} Celcius.
+		The sixth day forecast: #{@forecast_6}, #{@day_temperature_6} Celcius.
+		The seventh day forecast: #{@forecast_7}, #{@day_temperature_7} Celcius."
+	end
+end
+
+def traveling_city
+	puts "Which city are you going to be traveling in next seven days?"
+	city = gets.chomp
+	city = city.delete(' ')
+	weather_url =  "http://api.openweathermap.org/data/2.5/forecast/daily?q=#{city}&mode=json&units=metric&cnt=7"
+	response = JSON.parse(RestClient.get(weather_url))
+	city_name = response["city"]["name"]
+	city_lon = response["city"]["coord"]["lon"]
+	city_lat = response["city"]["coord"]["lat"]
+	forecast_1 = response["list"][0]["weather"][0]["description"]
+	forecast_2 = response["list"][1]["weather"][0]["description"]
+	forecast_3 = response["list"][2]["weather"][0]["description"]
+	forecast_4 = response["list"][3]["weather"][0]["description"]
+	forecast_5 = response["list"][4]["weather"][0]["description"]
+	forecast_6 = response["list"][5]["weather"][0]["description"]
+	forecast_7 = response["list"][6]["weather"][0]["description"]
+	day_temperature_1 = response["list"][0]["temp"]["min"]
+	day_temperature_2 = response["list"][1]["temp"]["min"]
+	day_temperature_3 = response["list"][2]["temp"]["min"]
+	day_temperature_4 = response["list"][3]["temp"]["min"]
+	day_temperature_5 = response["list"][4]["temp"]["min"]
+	day_temperature_6 = response["list"][5]["temp"]["min"]
+	day_temperature_7 = response["list"][6]["temp"]["min"]
+
+	rain_checker = "#{forecast_1}, #{forecast_2}, 
+	#{forecast_3}, #{forecast_4}, #{forecast_5}, #{forecast_6}, #{forecast_7}"
+
+	
+
+
+	altitude_url = "https://maps.googleapis.com/maps/api/elevation/json?locations=#{city_lat},#{city_lon}&key=AIzaSyAG6xeRdpdBPPlPTZ8v_nTP2e-1Wvv4YIs"
+	altitude_response = JSON.parse(RestClient.get(altitude_url))
+	altitude_val = altitude_response["results"][0]["elevation"].round(1)
+	altitude_ft = (altitude_val * 3.2804).round(1)
+	puts "-----\nThe altitude of #{city} is #{altitude_val} meters or #{altitude_ft} feet.\n-----"
+
+	if altitude_val > 1500
+		puts "Please be aware that #{city}\'s high altitude might cause dizziness, please take altitude pills.\n----"
+	elsif altitude_val > 3000
+		puts "Please be aware that #{city}\'s extreme high altitude might cause dizziness, please take altitude pills and take two full days of rest to adjust fully.\n----"
+	elsif altitude_val > 5000
+		puts "You need oxygen tank for this kind of altitude (and medical + life insurance are strongly recommended.\n----"
+	else
+		puts "The altitude is low enough that you don't need to worry about altitude pills.\n----"
+	end
+
+	if city == "Amsterdam"
+		puts "Make sure you get rid of your wife/girlfriend.\n-----\nRed light district is only ten minutes of walk from the central station.\n-----"
+		puts "Above all, make sure you pack your condom\n-----"
+		puts "LMK if you need to find a good coffee shop.\n-----"
+	end
+
+	if rain_checker.include? "rain" or "snow"
+		puts "Get your umbrella ready!\n-----"
+	end
+
+	if day_temperature_1 > 26 or day_temperature_2 > 26 or day_temperature_3 > 26 or day_temperature_4 > 26 or day_temperature_5 > 26 or day_temperature_6 >26 or day_temperature_7 >26
+		puts "Get your bikini ready!\n-----"
+	end
+
+	puts "Made by Donald J. Trump. Make America Strong Again! (Registered Trademark)\n-----"
+
+
+	City_weather.new(city_name, city_lon, 
+	city_lat, forecast_1, forecast_2, forecast_3, forecast_4, 
+	forecast_5, forecast_6, forecast_7, day_temperature_1, day_temperature_2, 
+	day_temperature_3, day_temperature_4, day_temperature_5, day_temperature_6, day_temperature_7)
+
+	
+
+
+end
+
+
+puts traveling_city.to_s
+

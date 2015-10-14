@@ -1,0 +1,17 @@
+require 'rest-client'
+require 'json'
+
+#You want to share the code with anybody but don't want to share the develpment keys
+#This is why we would like to hide the files
+# ~/.bash_profile  How to view the bash profile
+#type export REDDIT_SECRET_KEY='12345678' on bash profile
+#slack Adam the key
+#source ~/.bash_profile -> refreshing@
+#echo $REDDIT_SECRET_KEY
+#my_key = ENV['REDDIT_SECRET_KEY'] -> Telling go get my key 
+
+my_key = ENV['REDDIT_SECRET_KEY']
+
+url = "http://reddit.com/top.json?secret=#{my_key}"
+
+puts url

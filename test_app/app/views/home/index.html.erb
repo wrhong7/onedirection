@@ -1,0 +1,18 @@
+<h1>Richard's Application</h1>
+
+<p><%=
+	time = Time.now
+	time = time.to_s
+	time = time[11..12]
+	time = "#{time}"
+	time = time.to_i
+
+	if time < 6 or time > 18
+		"Bon Soir!"
+	elsif time >= 6 or time <= 12
+		"Bonjour!"
+	elsif time >12 or time <= 18
+		"Good Afternoon"
+	end
+
+%></p>

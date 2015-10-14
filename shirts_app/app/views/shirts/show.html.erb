@@ -1,0 +1,6 @@
+<h1><%= @shirt.name %></h1>
+<%= image_tag @shirt.image %>
+<p><%= @shirt.description %></p>
+<p><%= link_to 'edit shirt', edit_shirt_path(@shirt) %> |
+	<%= link_to 'delete shirt', shirt_path(@shirt), method: :delete %>
+</p>

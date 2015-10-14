@@ -1,0 +1,13 @@
+<h5>Maybe Richard has read what you are thinking of now</h5>
+<%= form_tag "/", method: :get do %>
+	<%= text_field_tag :q, params[:q] %>
+	<%= submit_tag "Search" %>
+<% end %>
+
+<h1>Richard's Bookshelf</h1>
+<% @libraries.each do |book| %>
+	<div class="book">
+		<h3><%= link_to book.title, library_path(book.id) %> by <%=book.author%></h3>
+	</div>
+<% end %>
+

@@ -1,0 +1,18 @@
+<% if @guess == @computer_guess %>
+	<h1>Play Again Bruh! </h1>
+	<p><%= image_tag 'games/tie.jpg' %></p>
+<% elsif @guess == "rock" && @computer_guess == "paper" %>
+	<p><%= image_tag 'games/loser.gif' %></p>
+<% elsif @guess == "rock" && @computer_guess == "scissors" %>
+	<p><%= image_tag 'games/winner.gif' %></p>
+<% elsif @guess == "paper" && @computer_guess == "scissors" %>
+	<p><%= image_tag 'games/loser.gif' %></p>
+<% elsif @guess == "paper" && @computer_guess == "rock" %>
+	<p><%= image_tag 'games/winner.gif' %></p>
+<% elsif @guess == "scissors" && @computer_guess == "rock" %>
+	<p><%= image_tag 'games/loser.gif' %></p>
+<% else @guess == "scissors" && @computer_guess == "paper" %>
+	<p><%= image_tag 'games/winner.gif' %></p>
+<% end %>
+
+<p><%= link_to 'play again?', new_secret_path %></p>

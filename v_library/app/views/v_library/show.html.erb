@@ -1,0 +1,8 @@
+<h1><%= @library.title %></h1>
+<p><%= @library.author %></p>
+<p><%= @library.rating %>/5</p>
+<p><%= @library.review %></p>
+
+<p><%= link_to 'edit book', edit_bookshelf_path(@library) %> |
+	<%= link_to 'delete book', bookshelf_path(@library), method: :delete %>
+</p>
